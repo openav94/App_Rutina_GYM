@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Guía visual e interactiva de rutinas de gimnasio: técnica paso a paso, filtro por músculo y seguimiento de entrenamientos por usuario.">
+  <meta name="theme-color" content="#0b0d12">
+  <title>Guía Visual de Rutinas de Gym</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d12'/%3E%3Cpath d='M13 25h7v14h-7zm31 0h7v14h-7zM8 28h5v8H8zm43 0h5v8h-5zM20 29h24v6H20z' fill='%23ff5a3c'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true">GV</span>
+      <span>Guía Visual<small>Rutinas de Gym</small></span>
+    </a>
+    <nav class="tabs-nav" aria-label="Secciones">
+      <button data-view="inicio" class="active">Inicio</button>
+      <button data-view="rutinas">Rutinas</button>
+      <button data-view="seguimiento">Seguimiento</button>
+    </nav>
+    <div class="profile-area">
+      <select class="profile-select" id="profileSelect" aria-label="Perfil activo"></select>
+      <button class="icon-btn" id="manageProfilesBtn" title="Gestionar perfiles" aria-label="Gestionar perfiles">＋</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ---------------- INICIO ---------------- -->
+    <section id="view-inicio" class="view">
+      <div class="hero">
+        <div class="wrap">
+          <p class="eyebrow">Programa de 3 días · 31 ejercicios</p>
+          <h1>Entrena con intención.<br><em>Sigue tu progreso.</em></h1>
+          <p class="lead">Elige tus ejercicios por día o por músculo, revisa la técnica con diagramas de movimiento y registra cada sesión en tu propio historial.</p>
+          <div class="stat-row" id="heroStats"></div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <section class="principles">
+          <div class="wrap" style="padding:0;">
+            <p class="eyebrow">Antes de empezar</p>
+            <h2>Técnica primero, carga después</h2>
+            <div class="principle-grid">
+              <article><b>01</b><h3>Prepara</h3><p>Haz 5-10 minutos de calentamiento y una serie ligera del primer movimiento.</p></article>
+              <article><b>02</b><h3>Controla</h3><p>Usa una carga que permita completar el rango sin dolor ni compensaciones.</p></article>
+              <article><b>03</b><h3>Respira</h3><p>Inhala en la fase de descenso y exhala durante el esfuerzo, salvo indicación profesional.</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="source-note">
+          <h2>Nota de seguridad</h2>
+          <p>Esta guía es educativa y el volumen propuesto es orientativo. Detén el ejercicio ante dolor agudo, mareo o pérdida de control. Si tienes una lesión, embarazo, condición cardiovascular o limitación médica, consulta a un profesional de salud y entrena con supervisión.</p>
+          <p>La estructura respeta la rutina suministrada y aplica principios generales de individualización y constancia descritos por el <a href="https://acsm.org/resistance-training-guidelines-update-2026/" target="_blank" rel="noreferrer">American College of Sports Medicine</a>. La técnica del peso muerto rumano se contrastó con la guía educativa de <a href="https://www.acefitness.org/continuing-education/certified/may-2025/8865/the-ace-do-it-better-series-the-romanian-deadlift/" target="_blank" rel="noreferrer">ACE Fitness</a>.</p>
+        </section>
+      </div>
+    </section>
+
+    <!-- ---------------- RUTINAS ---------------- -->
+    <section id="view-rutinas" class="view" hidden>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Tu sesión</p>
+            <h2 id="routineTitle">Día 1 · Piernas</h2>
+          </div>
+          <label class="search-box">
+            <span class="sr-only">Buscar ejercicio</span>
+            <input id="searchInput" type="search" placeholder="Buscar ejercicio o músculo">
+          </label>
+        </div>
+
+        <nav class="day-tabs" aria-label="Elegir día o modo">
+          <button class="day-tab active" data-day="1"><b>01</b><span>Piernas</span></button>
+          <button class="day-tab" data-day="2"><b>02</b><span>Espalda + core + pecho</span></button>
+          <button class="day-tab" data-day="3"><b>03</b><span>Glúteos</span></button>
+          <button class="day-tab" data-day="custom"><b>+</b><span>Armar por músculo</span></button>
+        </nav>
+
+        <div class="toolbar">
+          <div class="filters" id="categoryFilters" aria-label="Filtrar por grupo muscular"></div>
+        </div>
+
+        <div class="builder-bar" id="builderBar" hidden>
+          <span><strong id="builderCount">0</strong> ejercicios seleccionados para tu rutina personalizada</span>
+          <div style="display:flex; gap:10px;">
+            <button class="btn ghost" id="clearSelection">Vaciar</button>
+            <button class="btn" id="startCustomSession" disabled>Iniciar sesión</button>
+          </div>
+        </div>
+
+        <div class="builder-bar" id="sessionBar" hidden style="border-color: var(--ok);">
+          <span>Sesión en curso · <strong id="sessionDoneCount">0</strong> completados</span>
+          <div style="display:flex; gap:10px;">
+            <button class="btn ghost" id="cancelSession">Cancelar</button>
+            <button class="btn" id="finishSession">Finalizar sesión</button>
+          </div>
+        </div>
+
+        <div class="builder-bar" id="sessionSummary" hidden style="border-color: var(--lime);"></div>
+
+        <div class="exercise-grid" id="exerciseGrid"></div>
+        <p class="empty" id="emptyState" hidden>No encontramos ejercicios con ese criterio.</p>
+      </div>
+    </section>
+
+    <!-- ---------------- SEGUIMIENTO ---------------- -->
+    <section id="view-seguimiento" class="view" hidden>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow" id="trackingProfileLabel">Perfil</p>
+            <h2>Seguimiento de entrenamientos</h2>
+          </div>
+        </div>
+
+        <div class="stat-row" id="trackingStats" style="margin-bottom: 30px;"></div>
+
+        <div class="two-col">
+          <div>
+            <h3 style="margin:0 0 14px; font-size:1.1rem;">Historial de sesiones</h3>
+            <div class="history-list" id="historyList"></div>
+            <p class="empty" id="historyEmpty" hidden>Aún no registras sesiones. Ve a "Rutinas", arma tu sesión y pulsa "Finalizar sesión".</p>
+          </div>
+          <div class="panel-card">
+            <h3 style="margin:0 0 16px; font-size:1.1rem;">Distribución por grupo muscular</h3>
+            <div class="chart-row" id="muscleChart"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">Guía Visual de Rutinas de Gym · Datos guardados solo en este navegador, por perfil.</footer>
+
+  <dialog id="exerciseDialog" aria-labelledby="dialogTitle">
+    <button class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <dialog id="profileDialog" aria-labelledby="profileDialogTitle">
+    <button class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    <div class="profile-modal-body">
+      <h2 id="profileDialogTitle" style="margin:0; text-transform:none; font-family:Inter,sans-serif;">Perfiles</h2>
+      <p style="margin:0; color:var(--text-dim); font-size:.9rem;">Cada perfil guarda su propio progreso y seguimiento en este navegador.</p>
+      <div style="display:flex; gap:8px;">
+        <input id="newProfileName" type="text" placeholder="Nombre del nuevo perfil" maxlength="30">
+        <button class="btn" id="addProfileBtn">Crear</button>
+      </div>
+      <div class="profile-list" id="profileList"></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
